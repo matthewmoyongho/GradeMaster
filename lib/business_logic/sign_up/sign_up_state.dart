@@ -27,11 +27,11 @@ class SignUpState {
   }) {
     return SignUpState(
       nameInput: nameInput ?? this.nameInput,
-      passwordInput: passwordInput != null ? passwordInput : this.passwordInput,
-      status: status != null ? status : this.status,
-      errorMessage: errorMessage != null ? errorMessage : this.errorMessage,
-      emailInput: emailInput != null ? emailInput : this.emailInput,
-      showPassword: showPassword != null ? showPassword : this.showPassword,
+      passwordInput: passwordInput ?? this.passwordInput,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+      emailInput: emailInput ?? this.emailInput,
+      showPassword: showPassword ?? this.showPassword,
     );
   }
 }

@@ -66,6 +66,26 @@ class GPCourseBloc extends Bloc<GPCoursesEvent, GPCourseState> {
     );
   }
 
+  // void _getYearGP(GetYearGP event, Emitter<GPCourseState> emit) async {
+  //   emit(GPCourseLoading());
+  //   final state = this.state;
+  //   List<GPCourse> courses = [];
+  //   for (var course in state.courses) {
+  //     if (course.year == event.year) {
+  //       courses.add(course);
+  //     }
+  //   }
+  //   String cgpa;
+  //   double totalPoints = 0.0;
+  //   double totalUnits = 0.0;
+  //   for (var course in courses) {
+  //     totalUnits = totalUnits + course.creditUnit;
+  //     totalPoints = totalPoints + course.points;
+  //   }
+  //   cgpa = (totalPoints / totalUnits).toStringAsFixed(2);
+  //   final gpToDouble = double.parse(cgpa);
+  // }
+
   void _addGPCourse(AddGPCourse event, Emitter<GPCourseState> emit) async {
     emit(GPCourseLoading());
     _courseRepository.addCourse(event.course);

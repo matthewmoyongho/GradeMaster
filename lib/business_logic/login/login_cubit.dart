@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(
       state.copyWith(
         emailInput: email,
-        status: Formz.validate([email, state.emailInput, state.passwordInput]),
+        status: Formz.validate([email, state.passwordInput]),
       ),
     );
   }
@@ -26,8 +26,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(
       state.copyWith(
         passwordInput: password,
-        status:
-            Formz.validate([password, state.emailInput, state.passwordInput]),
+        status: Formz.validate([password, state.emailInput]),
       ),
     );
   }

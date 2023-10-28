@@ -58,3 +58,13 @@ class ClearSemesterRecord extends GPCoursesEvent {
   @override
   List<Object?> get props => [year, semester];
 }
+
+class GetYearGP extends GPCoursesEvent {
+  final String year;
+
+  GetYearGP({required this.year});
+  @override
+  List<Object?> get props => [
+        year,
+      ];
+}

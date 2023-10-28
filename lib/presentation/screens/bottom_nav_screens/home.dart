@@ -301,21 +301,40 @@ class Home extends StatelessWidget {
                                                             ? 4
                                                             : 3)));
                                             TimeOfDay startTime = TimeOfDay(
-                                                hour: int.parse((courses[index]
-                                                        .startTime
-                                                        .toString())
-                                                    .substring(0, 2)),
-                                                minute: int.parse((courses[index]
-                                                        .startTime
-                                                        .toString())
-                                                    .substring(
+                                              hour: courses[index]
+                                                          .startTime
+                                                          .toString()
+                                                          .length <
+                                                      3
+                                                  ? int.parse((courses[index]
+                                                          .startTime
+                                                          .toString())
+                                                      .substring(0, 1))
+                                                  : int.parse((courses[index]
+                                                          .startTime
+                                                          .toString())
+                                                      .substring(0, 2)),
+                                              minute: courses[index]
+                                                          .startTime
+                                                          .toString()
+                                                          .length <
+                                                      3
+                                                  ? 0
+                                                  : int.parse(
+                                                      (courses[index]
+                                                              .startTime
+                                                              .toString())
+                                                          .substring(
                                                         2,
                                                         (courses[index].startTime)
                                                                     .toString()
                                                                     .length >
                                                                 3
                                                             ? 4
-                                                            : 3)));
+                                                            : 3,
+                                                      ),
+                                                    ),
+                                            );
 
                                             return CourseLectureTile(
                                               time:

@@ -33,11 +33,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
     });
   }
 
-  void homeTab() {
-    setState(() {
-      currentIndex = 1;
-    });
-  }
+  //void homeTab() {
+  //   setState(() {
+  //     currentIndex = 1;
+  //   });
+  // }
 
   List navScreens = [
     Home(),

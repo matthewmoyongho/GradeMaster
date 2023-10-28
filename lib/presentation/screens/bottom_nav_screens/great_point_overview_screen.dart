@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,6 +7,7 @@ import '../../../../business_logic/gp_course/gp_course_state.dart';
 import '../../../../business_logic/user/user_cubit.dart';
 import '../../../../business_logic/user/user_state.dart';
 import '../../../../constants.dart';
+import '../../../data/models/gp_course.dart';
 import '../../widgets/app_drawer.dart';
 import '../../widgets/year_summary_tile.dart';
 
@@ -125,6 +127,132 @@ class GreatPointOverViewScreen extends StatelessWidget {
                           const SizedBox(
                             height: 40,
                           ),
+                          BlocBuilder<GPCourseBloc, GPCourseState>(
+                              builder: (context, state) {
+                            if (state is GPCourseLoaded) {
+                              return AspectRatio(
+                                aspectRatio: 3 / 2,
+                                child: LineChart(
+                                  LineChartData(
+                                    lineBarsData: [
+                                      LineChartBarData(
+                                          spots: List.generate(
+                                            userState.year,
+                                            (index) {
+                                              List<GPCourse> yearCourses = [];
+
+                                              yearCourses.addAll(
+                                                state.courses.where((course) =>
+                                                    course.year ==
+                                                    'Year ${index + 1}'),
+                                              );
+                                              String yearGP;
+
+                                              double totalPoints = 0.0;
+                                              double totalUnits = 0.0;
+                                              for (var course in yearCourses) {
+                                                totalUnits = totalUnits +
+                                                    course.creditUnit;
+                                                totalPoints =
+                                                    totalPoints + course.points;
+                                              }
+                                              yearGP =
+                                                  (totalPoints / totalUnits)
+                                                      .toStringAsFixed(2);
+
+                                              return FlSpot(index + 1,
+                                                  double.parse(yearGP));
+                                            },
+                                          ),
+                                          isCurved: true,
+                                          dotData: const FlDotData(show: true),
+                                          belowBarData: BarAreaData(
+                                              show: true,
+                                              color: Colors.black
+                                                  .withOpacity(.7))),
+                                    ],
+                                    minX: 1,
+                                    maxY: 5,
+                                    minY: 0,
+                                    maxX: userState.year.toDouble(),
+                                    backgroundColor: Colors.blue[900],
+
+                                    titlesData: FlTitlesData(
+                                      show: true,
+                                      bottomTitles: AxisTitles(
+                                        axisNameSize: 20,
+                                        axisNameWidget: const Text(
+                                          'LEVEL',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        sideTitles: SideTitles(
+                                            showTitles: true,
+                                            reservedSize: 30,
+                                            interval: 1,
+                                            getTitlesWidget: (value, meta) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                  '${value.toInt()}00 level',
+                                                  style: const TextStyle(
+                                                      fontSize: 14),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                      leftTitles: AxisTitles(
+                                        axisNameSize: 20,
+                                        axisNameWidget: const Text(
+                                          'CGPA',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        sideTitles: SideTitles(
+                                            showTitles: true,
+                                            reservedSize: 20,
+                                            interval: 1,
+                                            getTitlesWidget: (value, meta) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5.0),
+                                                child: Text(
+                                                  '${value.toInt()}',
+                                                  style: const TextStyle(
+                                                      fontSize: 14),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                      rightTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                            showTitles: true,
+                                            reservedSize: 15,
+                                            getTitlesWidget: (value, meta) {
+                                              return Text(
+                                                '${value.toInt()}',
+                                                style: const TextStyle(
+                                                    color: Colors.transparent),
+                                              );
+                                            }),
+                                      ),
+                                      topTitles: const AxisTitles(
+                                        sideTitles:
+                                            SideTitles(showTitles: false),
+                                      ),
+                                    ),
+                                    // gridData: const FlGridData(
+                                    //     show: true,
+                                    //     drawHorizontalLine: true)
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const AspectRatio(
+                                aspectRatio: 1,
+                                child: Text('Loading chart'),
+                              );
+                            }
+                          }),
                           // Material(
                           //   borderRadius: BorderRadius.circular(15),
                           //   elevation: 5,

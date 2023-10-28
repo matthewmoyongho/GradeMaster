@@ -21,7 +21,7 @@ class _AddGPCourseBottomSheet extends State<AddGPCourseBottomSheet> {
   final formKey = GlobalKey<FormState>();
   String? code;
   String? title;
-  late String selectedGrade;
+  String? selectedGrade;
   late int unit;
   late int points;
   //late String semester;
@@ -73,202 +73,212 @@ class _AddGPCourseBottomSheet extends State<AddGPCourseBottomSheet> {
                   color: Colors.white,
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(20))),
-              child: Form(
-                key: formKey,
-                child: ListView(controller: draggableController, children: [
-                  const Text(
-                    'Add Course',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    // autofocus: true,
-                    initialValue: code ?? '',
-                    textInputAction: TextInputAction.next,
-                    onSaved: (val) => setState(() {
-                      code = val!;
-                    }),
-                    validator: (val) =>
-                        val == null ? 'This field is required' : null,
-                    key: const ValueKey('code'),
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Course code - (required)',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                    onFieldSubmitted: (val) {
-                      FocusScope.of(context).requestFocus(unitFocusNode);
-                    },
-                    keyboardType: TextInputType.text,
-                    maxLength: 10,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    focusNode: unitFocusNode,
-                    initialValue:
-                        widget.loadedId != null ? unit.toString() : null,
-                    onSaved: (val) => setState(() {
-                      unit = int.parse(val!);
-                    }),
-                    key: const ValueKey('unit'),
-                    validator: (val) =>
-                        val == null ? 'This field is required' : null,
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Credit Unit - (required)',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (val) {
-                      FocusScope.of(context).requestFocus(gradeFocusNode);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DropdownButtonFormField(
-                    focusNode: gradeFocusNode,
-                    key: const ValueKey('grade'),
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Grade - (required)',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                    //value: endTime,
-                    items: grades
-                        .map((grade) => DropdownMenuItem(
-                              value: grade,
-                              child: Text(grade.toString()),
-                            ))
-                        .toList(),
-                    value: selectedGrade,
-                    onChanged: (val) {
-                      setState(() {
-                        selectedGrade = val!.toString();
-                      });
-                    },
-                    onSaved: (val) {
-                      setState(() {
-                        selectedGrade = val!.toString();
-                      });
+              child: BlocBuilder<GPCourseBloc, GPCourseState>(
+                builder: (context, state) {
+                  if (state is GPCourseLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                      if (selectedGrade == 'A') {
-                        points = unit * 5;
-                      } else if (selectedGrade == 'B') {
-                        points = unit * 4;
-                      } else if (selectedGrade == 'C') {
-                        points = unit * 3;
-                      } else if (selectedGrade == 'D') {
-                        points = unit * 2;
-                      } else if (selectedGrade == 'E') {
-                        points = unit * 1;
-                      } else if (selectedGrade == 'F') {
-                        points = unit * 0;
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    focusNode: titleFocusNode,
-                    initialValue: title,
-                    textCapitalization: TextCapitalization.sentences,
-                    textInputAction: TextInputAction.next,
-                    onSaved: (val) => setState(() {
-                      title = val!;
-                    }),
-                    key: const ValueKey('courseTitle'),
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Course Title - (optional)',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
+                  return Form(
+                    key: formKey,
+                    child: ListView(controller: draggableController, children: [
+                      const Text(
+                        'Add Course',
+                        style: TextStyle(fontSize: 20),
                       ),
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(deviceSize.width * 0.3, 40),
-                            backgroundColor: Colors.blue[900]),
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                          }
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        // autofocus: true,
+                        initialValue: code ?? '',
+                        textInputAction: TextInputAction.next,
+                        onSaved: (val) => setState(() {
+                          code = val!;
+                        }),
+                        validator: (val) =>
+                            val == null ? 'This field is required' : null,
+                        key: const ValueKey('code'),
+                        decoration: const InputDecoration(
+                          label: Text(
+                            'Course code - (required)',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                        onFieldSubmitted: (val) {
+                          FocusScope.of(context).requestFocus(unitFocusNode);
+                        },
+                        keyboardType: TextInputType.text,
+                        maxLength: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        focusNode: unitFocusNode,
+                        initialValue:
+                            widget.loadedId != null ? unit.toString() : null,
+                        onSaved: (val) => setState(() {
+                          unit = int.parse(val!);
+                        }),
+                        key: const ValueKey('unit'),
+                        validator: (val) =>
+                            val == null ? 'This field is required' : null,
+                        decoration: const InputDecoration(
+                          label: Text(
+                            'Credit Unit - (required)',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (val) {
+                          FocusScope.of(context).requestFocus(gradeFocusNode);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      DropdownButtonFormField(
+                        focusNode: gradeFocusNode,
+                        key: const ValueKey('grade'),
+                        decoration: const InputDecoration(
+                          label: Text(
+                            'Grade - (required)',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                        //value: endTime,
+                        items: grades
+                            .map((grade) => DropdownMenuItem(
+                                  value: grade,
+                                  child: Text(grade.toString()),
+                                ))
+                            .toList(),
+                        value: selectedGrade,
+                        onChanged: (val) {
+                          setState(() {
+                            selectedGrade = val!.toString();
+                          });
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            selectedGrade = val!.toString();
+                          });
 
-                          GPCourse course = GPCourse(
-                            grade: selectedGrade,
-                            points: points,
-                            code: code!,
-                            creditUnit: unit,
-                            year: widget.year,
-                            semester: widget.semester,
-                            title: title,
-                          );
-                          try {
-                            if (widget.loadedId != null) {
-                              context.read<GPCourseBloc>().add(UpdateGPCourse(
-                                  course: course, id: widget.loadedId!));
-                            } else {
-                              context
-                                  .read<GPCourseBloc>()
-                                  .add(AddGPCourse(course: course));
-                            }
-                          } catch (e) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('An error occurred'),
-                                content: Text(
-                                  'Could not add ${code ?? ''} to your record. Maybe you should check tour network and try again',
-                                ),
-                              ),
-                            );
+                          if (selectedGrade == 'A') {
+                            points = unit * 5;
+                          } else if (selectedGrade == 'B') {
+                            points = unit * 4;
+                          } else if (selectedGrade == 'C') {
+                            points = unit * 3;
+                          } else if (selectedGrade == 'D') {
+                            points = unit * 2;
+                          } else if (selectedGrade == 'E') {
+                            points = unit * 1;
+                          } else if (selectedGrade == 'F') {
+                            points = unit * 0;
                           }
-                          Navigator.pop(context);
                         },
-                        child: const Text(
-                          'Add',
-                          style: TextStyle(fontSize: 20),
-                        ),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(deviceSize.width * 0.3, 40),
-                            backgroundColor: Colors.blue[900]),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          'Cancel',
-                          style: TextStyle(fontSize: 20),
-                        ),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ],
-                  )
-                ]),
+                      TextFormField(
+                        focusNode: titleFocusNode,
+                        initialValue: title,
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.next,
+                        onSaved: (val) => setState(() {
+                          title = val!;
+                        }),
+                        key: const ValueKey('courseTitle'),
+                        decoration: const InputDecoration(
+                          label: Text(
+                            'Course Title - (optional)',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                        keyboardType: TextInputType.text,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                fixedSize: Size(deviceSize.width * 0.3, 40),
+                                backgroundColor: Colors.blue[900]),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                formKey.currentState!.save();
+                              }
+
+                              GPCourse course = GPCourse(
+                                grade: selectedGrade!,
+                                points: points,
+                                code: code!,
+                                creditUnit: unit,
+                                year: widget.year,
+                                semester: widget.semester,
+                                title: title,
+                              );
+                              try {
+                                if (widget.loadedId != null) {
+                                  context.read<GPCourseBloc>().add(
+                                      UpdateGPCourse(
+                                          course: course,
+                                          id: widget.loadedId!));
+                                } else {
+                                  context
+                                      .read<GPCourseBloc>()
+                                      .add(AddGPCourse(course: course));
+                                }
+                              } catch (e) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('An error occurred'),
+                                    content: Text(
+                                      'Could not add ${code ?? ''} to your record. Maybe you should check tour network and try again',
+                                    ),
+                                  ),
+                                );
+                              }
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              'Add',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                fixedSize: Size(deviceSize.width * 0.3, 40),
+                                backgroundColor: Colors.blue[900]),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
+                  );
+                },
               ),
             ),
           ),

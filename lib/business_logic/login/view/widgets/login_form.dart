@@ -59,9 +59,9 @@ class LoginForm extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Expanded(
                       child: Divider(
                     color: Colors.blueGrey,
@@ -138,9 +138,9 @@ class _passwordInput extends StatelessWidget {
               labelText: 'Password',
               prefixIcon: Icon(Icons.password_outlined),
               suffixIcon: GestureDetector(
-                onTap: () => context.read<SignUpCubit>().updateShowPassword(),
+                onTap: () => context.read<LoginCubit>().updateShowPassword(),
                 child: Icon(
-                  state.showPassword ? Icons.visibility : Icons.visibility_off,
+                  state.showPassword ? Icons.visibility_off : Icons.visibility,
                 ),
               ),
             ),
@@ -148,6 +148,59 @@ class _passwordInput extends StatelessWidget {
         });
   }
 }
+
+// class _registerButton extends StatelessWidget {
+//   _registerButton({Key? key}) : super(key: key);
+//   final spinkit = SpinKitFadingCircle(
+//     itemBuilder: (BuildContext context, int index) {
+//       return DecoratedBox(
+//         decoration: BoxDecoration(
+//           color: index.isEven ? Colors.red : Colors.blue[900],
+//         ),
+//       );
+//     },
+//   );
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<SignUpCubit, SignUpState>(
+//         buildWhen: (previous, current) => previous != current,
+//         builder: (context, state) {
+//           return state.status.isSubmissionInProgress
+//               ? spinkit
+//               : ElevatedButton(
+//                   key: const Key('Submit_value_text_field'),
+//                   onPressed: state.status.isValidated
+//                       ? () async {
+//                           print(state.nameInput.value.trim());
+//                           FocusManager.instance.primaryFocus?.unfocus();
+//                           final user =
+//                               await context.read<SignUpCubit>().singUp();
+//                           if (user != null) {
+//                             final userDetails = UserData(
+//                                 gpTarget: 'NOT SET',
+//                                 phone: '',
+//                                 school: '',
+//                                 year: 0,
+//                                 name: state.nameInput.value.toString().trim());
+//                             context
+//                                 .read<UserCubit>()
+//                                 .setUserData(user.uid, userDetails);
+//                           }
+//                         }
+//                       : null,
+//                   style: ElevatedButton.styleFrom(
+//                       fixedSize: Size(MediaQuery.of(context).size.width, 20)),
+//                   child: const Text(
+//                     'Register',
+//                     style: TextStyle(
+//                         color: Colors.white,
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.bold),
+//                   ),
+//                 );
+//         });
+//   }
+// }
 
 class _loginButton extends StatelessWidget {
   _loginButton({Key? key}) : super(key: key);
@@ -168,8 +221,13 @@ class _loginButton extends StatelessWidget {
           return state.status.isSubmissionInProgress
               ? spinkit
               : ElevatedButton(
-                  key: const Key('Submit_value_text_field'),
-                  onPressed: () => context.read<LoginCubit>().login(),
+                  key: const Key('Login_value_text_field'),
+                  onPressed: state.status.isValidated
+                      ? () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          context.read<LoginCubit>().login();
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: kDarkBlue,

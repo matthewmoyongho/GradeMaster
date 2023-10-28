@@ -40,7 +40,7 @@ class AssignmentRepository {
     return assignment;
   }
 
-  Assignment toggleDose(Assignment assignment, String id, bool done) {
+  Assignment toggleDone(Assignment assignment, String id, bool done) {
     _firestore
         .collection('Users')
         .doc(_uid)

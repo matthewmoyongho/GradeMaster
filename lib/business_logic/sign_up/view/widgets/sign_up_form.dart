@@ -55,8 +55,8 @@ class SignUpForm extends StatelessWidget {
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
@@ -74,13 +74,13 @@ class SignUpForm extends StatelessWidget {
                       child: Divider(
                     color: Colors.blueGrey,
                   )),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                 ],
               ),
             ),
-            _loginButton()
+            const _loginButton()
           ],
         ),
       ),
@@ -207,7 +207,7 @@ class _registerButton extends StatelessWidget {
                       : null,
                   style: ElevatedButton.styleFrom(
                       fixedSize: Size(MediaQuery.of(context).size.width, 20)),
-                  child: Text(
+                  child: const Text(
                     'Register',
                     style: TextStyle(
                         color: Colors.white,
@@ -227,12 +227,13 @@ class _loginButton extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
         buildWhen: (previous, present) => previous != present,
         builder: (context, state) {
-          if (state.status.isSubmissionInProgress) return SizedBox.shrink();
+          if (state.status.isSubmissionInProgress)
+            return const SizedBox.shrink();
           return TextButton(
             key: const Key('Login_instead_value_text_field'),
             onPressed: () =>
                 Navigator.of(context).pushReplacementNamed(kSignInScreenRoute),
-            child: Text(
+            child: const Text(
               'Already have an account? Login ',
               style: TextStyle(
                   color: kDarkBlue, fontSize: 12, fontWeight: FontWeight.bold),

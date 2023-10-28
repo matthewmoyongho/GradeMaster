@@ -9,7 +9,7 @@ class LoginState {
   bool showPassword;
 
   LoginState(
-      {this.showPassword = false,
+      {this.showPassword = true,
       this.status = FormzStatus.pure,
       this.passwordInput = const PasswordInput.pure(),
       this.emailInput = const EmailInput.pure(),

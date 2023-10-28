@@ -57,9 +57,9 @@ class _SemesterScreenState extends State<SemesterScreen>
                           title: const Text(
                             'Clear CGPA Record?',
                           ),
-                          content: Column(
+                          content: const Column(
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.delete_forever,
                                 color: Colors.red,
